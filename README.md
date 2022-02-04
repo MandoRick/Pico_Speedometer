@@ -2,6 +2,7 @@
 Hall Sensor (3) Based Speedometer/Odometer/Tachometer for Raspi Pico with Round Display (GC9A01A)
 
 display GC9A01A pins:
+
 TFT_CLK (2)
 TFT_DIN (3)
 TFT_DC (4)
