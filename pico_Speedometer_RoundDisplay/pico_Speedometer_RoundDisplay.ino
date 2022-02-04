@@ -118,7 +118,7 @@ volatile boolean turnSignalTimerTriggerState = true;
 //------- end first timer stuff --------
 
 //------- version stuff --------
-const String p_project = "default";
+const String p_project = "Pico_Speedometer";
 const uint8_t version_hi = 0;
 const uint8_t version_lo = 1;
 void versionPrint(void) {
