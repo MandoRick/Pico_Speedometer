@@ -2,7 +2,9 @@
 
 Hall Sensor (3) Based Speedometer/Odometer/Tachometer for Raspi Pico with Round Display (GC9A01A)
 
-Using Earle F. Philhower, III "Raspberry Pi Pico Arduino core for all RP2040 boards" in Arduino IDE (https://github.com/earlephilhower/arduino-pico)
+Using Core from & Special thx to: Earle F. Philhower, III (Raspberry Pi Pico Arduino core for all RP2040 boards)
+
+in Arduino IDE (https://github.com/earlephilhower/arduino-pico)
 
 Notes on installing Philhower Core: https://learn.adafruit.com/rp2040-arduino-with-the-earlephilhower-core/installing-the-earlephilhower-core
 
