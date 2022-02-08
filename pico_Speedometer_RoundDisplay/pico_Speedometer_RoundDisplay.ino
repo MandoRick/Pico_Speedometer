@@ -78,6 +78,9 @@ volatile bool sensorBool1 = false;
 volatile bool sensorBool2 = false;
 volatile bool sensorBool3 = false;
 volatile bool variableOwnershipFlag = false;
+volatile bool buttonAction1 = false;
+volatile bool buttonAction2 = false;
+volatile bool buttonAction3 = false;
 long turnSignalDebounceTime = 250;   //in millis
 volatile unsigned long turnSignalDebouncePreviousMicrosLeft;
 volatile unsigned long turnSignalDebouncePreviousMicrosRight;
@@ -161,6 +164,7 @@ void setup1() {
 
 void loop() {
   updateVariables();
+  checkButtonActions();
   checkTurnSignalTimer();
   renderTft();
 }
@@ -203,7 +207,7 @@ void checkTurnSignalTimer() {
         }
         flasherPinCountOld = flasherPinCountNew;
         flasherPinCountNew++;
-        if (flasherPinCountNew > 4) {
+        if (flasherPinCountNew > 3) {
           flasherPinCountNew = 0;
         }
       }
@@ -223,30 +227,15 @@ void checkTurnSignalTimer() {
 }
 
 void triggerButtonLeft() {
-  if ((long)(micros() - turnSignalDebouncePreviousMicrosLeft) >= turnSignalDebounceTime * 1000) {
-    buttonBoolLeft = !buttonBoolLeft;
-    buttonBoolRight = false;
-    buttonBoolEmergency = false;
-    turnSignalDebouncePreviousMicrosLeft = micros();
-  }
+  buttonAction1 = true;
 }
 
 void triggerButtonRight() {
-  if ((long)(micros() - turnSignalDebouncePreviousMicrosRight) >= turnSignalDebounceTime * 1000) {
-    buttonBoolRight = !buttonBoolRight;
-    buttonBoolLeft = false;
-    buttonBoolEmergency = false;
-    turnSignalDebouncePreviousMicrosRight = micros();
-  }
+  buttonAction2 = true;
 }
 
 void triggerButtonEmergency() {
-  if ((long)(micros() - emergencySignalDebouncePreviousMicros) >= turnSignalDebounceTime * 1000) {
-    buttonBoolEmergency = !buttonBoolEmergency;
-    buttonBoolRight = false;
-    buttonBoolLeft = false;
-    emergencySignalDebouncePreviousMicros = micros();
-  }
+  buttonAction3 = true;
 }
 
 void triggerSensor1() {
@@ -275,6 +264,48 @@ void checkSensors() {
     sensorBool2 = false;
     sensorBool3 = false;
     countRotation();
+  }
+}
+
+void checkButtonActions() {
+  if (buttonAction1 == true) {
+    buttonAction1 = false;
+    if ((long)(micros() - turnSignalDebouncePreviousMicrosLeft) >= turnSignalDebounceTime * 1000) {
+      buttonBoolLeft = !buttonBoolLeft;
+      buttonBoolRight = false;
+      buttonBoolEmergency = false;
+      turnSignalDebouncePreviousMicrosLeft = micros();
+    }
+    for (uint8_t i = 0; i < 4; i++) {
+      digitalWrite(flasherPinsLeft[i], flasherPinOff);
+      digitalWrite(flasherPinsRight[i], flasherPinOff);
+    }
+  }
+  if (buttonAction2 == true) {
+    buttonAction2 = false;
+    if ((long)(micros() - turnSignalDebouncePreviousMicrosRight) >= turnSignalDebounceTime * 1000) {
+      buttonBoolRight = !buttonBoolRight;
+      buttonBoolLeft = false;
+      buttonBoolEmergency = false;
+      turnSignalDebouncePreviousMicrosRight = micros();
+    }
+    for (uint8_t i = 0; i < 4; i++) {
+      digitalWrite(flasherPinsLeft[i], flasherPinOff);
+      digitalWrite(flasherPinsRight[i], flasherPinOff);
+    }
+  }
+  if (buttonAction3 == true) {
+    buttonAction3 = false;
+    if ((long)(micros() - emergencySignalDebouncePreviousMicros) >= turnSignalDebounceTime * 1000) {
+      buttonBoolEmergency = !buttonBoolEmergency;
+      buttonBoolRight = false;
+      buttonBoolLeft = false;
+      emergencySignalDebouncePreviousMicros = micros();
+    }
+    for (uint8_t i = 0; i < 4; i++) {
+      digitalWrite(flasherPinsLeft[i], flasherPinOff);
+      digitalWrite(flasherPinsRight[i], flasherPinOff);
+    }
   }
 }
 
