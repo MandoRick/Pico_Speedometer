@@ -438,8 +438,8 @@ void renderTft() {
   rpmIndDotCurrentY = 120 + 80 * (-cos(rpmRotationAngleCurrent * pi / 180));
   rpmIndDotCurrentX = 120 + 80 * (sin(rpmRotationAngleCurrent * pi / 180));
   if (rpmRotationAngleCurrent != rpmRotationAngleOld) {
-    tft.drawCircle(rpmIndDotOldX, rpmIndDotOldY, 12, GC9A01A_BLACK);
-    tft.drawCircle(rpmIndDotCurrentX, rpmIndDotCurrentY, 12, GC9A01A_RED);
+    tft.fillCircle(rpmIndDotOldX, rpmIndDotOldY, 12, GC9A01A_BLACK);
+    tft.fillCircle(rpmIndDotCurrentX, rpmIndDotCurrentY, 12, GC9A01A_CYAN);
   }
   if (displayDistanceKmCurrent != displayDistanceKmOld) {
     tft.setTextSize(2);
