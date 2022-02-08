@@ -82,6 +82,9 @@ volatile bool buttonAction1 = false;
 volatile bool buttonAction2 = false;
 volatile bool buttonAction3 = false;
 long turnSignalDebounceTime = 250;   //in millis
+volatile int8_t stripeStepAmount = 1;
+volatile int16_t racingStripeCurrent = 110;
+volatile int16_t racingStripeOld = 110;
 volatile unsigned long turnSignalDebouncePreviousMicrosLeft;
 volatile unsigned long turnSignalDebouncePreviousMicrosRight;
 volatile unsigned long emergencySignalDebouncePreviousMicros;
@@ -416,6 +419,13 @@ void updateVariables() {
 }
 
 void renderTft() {
+  racingStripeCurrent = racingStripeCurrent + stripeStepAmount;
+  if (racingStripeCurrent <= 90 || racingStripeCurrent >= 150) {
+    stripeStepAmount = -stripeStepAmount;
+  }
+  tft.fillRect(racingStripeOld, 65, 6, 6, GC9A01A_BLACK);
+  tft.fillRect(racingStripeCurrent, 65, 6, 6, GC9A01A_YELLOW);
+  racingStripeOld = racingStripeCurrent;
   if (displaySpeedKphCurrent >= 999) {
     displaySpeedKphCurrent = 0;
   }
